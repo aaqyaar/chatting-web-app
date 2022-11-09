@@ -1,11 +1,11 @@
-import { Layout } from "layouts";
+import { AppLayout } from "layouts";
 import { Counter } from "features/counter/Counter";
 
 function App() {
   return (
-    <Layout>
+    <AppLayout>
       <Counter />
-    </Layout>
+    </AppLayout>
   );
 }
 
