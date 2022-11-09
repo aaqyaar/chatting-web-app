@@ -11,6 +11,8 @@ interface ImageProps extends LazyLoadImageProps {
   effect?: any;
   ratio?: any;
   sx?: any;
+  height?: any;
+  width?: any;
   other?: any;
 }
 
@@ -19,7 +21,8 @@ export default function Image({
   disabledEffect = false,
   effect = "blur",
   sx,
-
+  width,
+  height,
   ...other
 }: ImageProps) {
   if (ratio) {
@@ -50,7 +53,11 @@ export default function Image({
           wrapperClassName="wrapper"
           effect={disabledEffect ? undefined : effect}
           placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
-          sx={{ width: 1, height: 1, objectFit: "cover" }}
+          sx={{
+            width: width ? width : 1,
+            height: height ? height : 1,
+            objectFit: "cover",
+          }}
           {...other}
         />
       </Box>
@@ -77,7 +84,11 @@ export default function Image({
         wrapperClassName="wrapper"
         effect={disabledEffect ? disabledEffect : effect}
         placeholderSrc="https://zone-assets-api.vercel.app/assets/img_placeholder.svg"
-        sx={{ width: 1, height: 1, objectFit: "cover" }}
+        sx={{
+          width: width ? width : 1,
+          height: height ? height : 1,
+          objectFit: "cover",
+        }}
         {...other}
       />
     </Box>

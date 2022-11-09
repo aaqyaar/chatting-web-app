@@ -13,6 +13,12 @@ import "@fontsource/public-sans/300.css";
 import "@fontsource/public-sans/400.css";
 import "@fontsource/public-sans/500.css";
 import "@fontsource/public-sans/700.css";
+// space grotesk
+import "@fontsource/space-grotesk/300.css";
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/700.css";
+
 // app
 import React from "react";
 import { createRoot } from "react-dom/client";
