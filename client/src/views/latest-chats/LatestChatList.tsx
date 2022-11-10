@@ -16,6 +16,11 @@ const ListItemStyle = styled((props: any) => (
   textTransform: "capitalize",
   color: theme.palette.text.secondary,
   borderRadius: "0",
+  transition: theme.transitions.create("all"),
+  "&:hover": {
+    backgroundColor: theme.palette.grey[700],
+    color: theme.palette.text.primary,
+  },
 }));
 
 // ----------------------------------------------------------------------
@@ -81,7 +86,13 @@ LatestChatItemProps) {
         >
           {item.name}
         </Box>
-        <Box sx={{ typography: "body2", color: "text.secondary" }}>
+        <Box
+          sx={{
+            typography: "body2",
+            color: "text.secondary",
+            fontFamily: "Space Grotesk",
+          }}
+        >
           {item.messages[0]}
         </Box>
 
@@ -101,6 +112,7 @@ LatestChatItemProps) {
             color={item.messages.length > 0 ? "primary" : "default"}
             sx={{
               fontWeight: "fontWeightMedium",
+              fontFamily: "Space Grotesk",
             }}
           />
         </Box>

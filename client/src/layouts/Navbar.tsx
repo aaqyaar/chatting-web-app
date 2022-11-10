@@ -1,4 +1,5 @@
-import { Typography, Stack, Link, Divider } from "@mui/material";
+import { Typography, Stack, Divider, Link } from "@mui/material";
+import { NavLink as RouterLink } from "react-router-dom";
 import Image from "components/Image";
 
 function Navbar() {
@@ -50,12 +51,22 @@ function Navbar() {
           justifyContent={"center"}
           alignItems="center"
           fontFamily={"Space Grotesk"}
-          color={"inherit"}
         >
-          <Link color={"inherit"}>Chat</Link>
-          <Link color={"inherit"}>Contacts</Link>
-          <Link color={"inherit"}>Settings</Link>
-          <Link color={"inherit"}>FAQS</Link>
+          <Link to="/" component={RouterLink}>
+            Home
+          </Link>
+          <Link component={RouterLink} to="/about">
+            About
+          </Link>
+          <Link component={RouterLink} to="/contacts">
+            Contact
+          </Link>
+          <Link component={RouterLink} to="/settings">
+            Settings
+          </Link>
+          <Link component={RouterLink} to="/faqs">
+            FAQS
+          </Link>
         </Stack>
       </Stack>
 
