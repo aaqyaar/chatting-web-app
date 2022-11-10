@@ -1,10 +1,11 @@
 import { AppLayout } from "layouts";
-import { Counter } from "features/counter/Counter";
+// import { Counter } from "features/counter/Counter";
+import { Main } from "layouts";
 
 function App() {
   return (
     <AppLayout>
-      <Counter />
+      <Main />
     </AppLayout>
   );
 }

@@ -2,7 +2,6 @@ import {
   LazyLoadImage,
   LazyLoadImageProps,
 } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 // @mui
 import { Box } from "@mui/material";
 

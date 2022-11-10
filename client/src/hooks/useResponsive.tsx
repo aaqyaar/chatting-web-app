@@ -4,19 +4,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ----------------------------------------------------------------------
 
-interface IUseResponsive {
-  query: string;
-  key: number | any;
+type Props = {
+  query?: any;
+  key?: any;
   start?: any;
   end?: any;
-}
+};
 
-export default function useResponsive({
-  query,
-  key,
-  start,
-  end,
-}: IUseResponsive) {
+export default function useResponsive({ query, key, start, end }: Props) {
   const theme = useTheme();
 
   const mediaUp = useMediaQuery(theme.breakpoints.up(key));
