@@ -5,7 +5,9 @@ export type User = {
   password: string;
   name: string;
   avatar: string;
+  phone: string;
   confirmed: boolean;
+  verificationCode: string | null;
   blocked: boolean;
   role: string;
   resetPasswordToken: string | undefined;

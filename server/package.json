@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/abdi-aaqyaar/chatting-web-app#readme",
   "dependencies": {
+    "@novu/node": "^0.9.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cryptojs": "^2.5.3",

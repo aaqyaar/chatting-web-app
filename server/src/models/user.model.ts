@@ -9,6 +9,7 @@ const schema: Schema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String },
+    phone: { type: String, required: true, unique: true },
     confirmed: { type: Boolean, default: false },
     blocked: { type: Boolean, default: false },
     role: { type: Schema.Types.ObjectId, ref: "Role" },

@@ -10,11 +10,16 @@ interface EMAIL_OPTIONS {
   subject: string;
   text: string;
 }
+
 // Class Auth
 export default class Auth {
   // @desc JWT variables
   private static JWT_SECRET_KEY: any = process.env.JWT_SECRET_KEY || "secret";
   private static JWT_EXPIRES_IN: any = process.env.JWT_EXPIRES_IN || "1d";
+
+  private static generateCode() {
+    return Math.random().toString(36).substring(2, 12);
+  }
 
   public static async generateToken({ _id }: any) {
     // Generate token
@@ -23,45 +28,62 @@ export default class Auth {
     });
     return token;
   }
-  // @desc    Register user
-  // @route   POST /api/v1/auth/register
-  // @access  Public
-  public static async register(req: Request, res: Response) {
-    try {
-      const user = await UserModel.create<UserDocument>(req.body);
-      return res.status(201).json(user);
-    } catch (error: any) {
-      return res.status(500).json({ error: error.message });
-    }
+
+  private static async SendCode({ phone }: any) {
+    return async (req: Request, res: Response) => {
+      const novuResponse = await sendNovuVerificationCode({
+        recipient: phone,
+        verificationCode: Auth.generateCode(),
+      });
+      if (await novuResponse.err) {
+        return res.status(500).json({ error: novuResponse.err });
+      }
+      return res.status(200).json({
+        message: "Your verification code has been sent to your phone number",
+      });
+    };
   }
   // @desc    Login user
   // @route   POST /api/v1/auth/login
   // @access  Public
-  public static async login(req: Request, res: Response) {
+  public static async loginOrSignup(req: Request, res: Response) {
     try {
-      const { email, password: unhashedPassword } = req.body;
-      const user = await UserModel.findOne<UserDocument>({ email }).exec();
+      const { phone } = req.body;
+      const user = await UserModel.findOne<UserDocument>({ phone }).exec();
       if (!user) {
-        return res
-          .status(404)
-          .json({ message: "User not exist on the server" });
+        const newUser: any = await new UserModel(req.body).save(); // Create new user
+        if (newUser.blocked) {
+          return res.status(400).json({ message: "User is blocked" });
+        }
+        await Auth.SendCode({ phone: newUser.phone });
       }
-
-      const isMatch = await user.isPasswordMatch(unhashedPassword);
-      if (!isMatch) {
-        return res.status(400).json({ message: "Invalid credentials" });
-      }
-      if (user.blocked) {
+      if (user?.blocked) {
         return res.status(400).json({ message: "User is blocked" });
       }
+      await Auth.SendCode({ phone: user?.phone });
+      // Send verification code to user phone number
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 
-      const token = await Auth.generateToken({ _id: user._id });
-      const { password, ...userWithoutPassword } = user.toObject();
-      const data = {
-        user: userWithoutPassword,
-        token,
-      };
-      return res.status(200).json({ user: data.user, token: data.token });
+  // @desc    Verify user
+  // @route   POST /api/v1/auth/verify
+  // @access  Public
+  public static async verifyUser(req: Request, res: Response) {
+    try {
+      const { phone, verificationCode } = req.body;
+      const user: any = await UserModel.findOne({
+        phone,
+      }).exec();
+      if (user?.verificationCode !== verificationCode) {
+        return res.status(400).json({ message: "Invalid verification code" });
+      }
+      await user.save();
+      const token = await Auth.generateToken({ _id: user?._id }); // Generate token
+      return res
+        .status(200)
+        .json({ user, token, message: "Verification code is correct." });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
